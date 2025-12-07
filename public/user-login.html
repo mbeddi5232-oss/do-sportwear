@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - SPORTWEAR</title>
+    <link href="https://fonts.googleapis.com/css2? family=Montserrat:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --dark: #0f172a;
+            --gray: #64748b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0. 25);
+            max-width: 450px;
+            width: 100%;
+            padding: 3rem;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--dark);
+            font-style: italic;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .logo-text span { color: var(--primary); }
+
+        .subtitle {
+            text-align: center;
+            color: var(--gray);
+            margin-bottom: 2. 5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1. 5rem;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0. 9rem;
+            color: var(--gray);
+            cursor: pointer;
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, #e55a2b 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            display: none;
+            border-left: 4px solid #c33;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .register-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .back-home {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .back-home a {
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .back-home a:hover {
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="logo-text">SPORT<span>WEAR</span></div>
+        <p class="subtitle">Connectez-vous à votre compte</p>
+
+        <div class="error-message" id="errorMessage"></div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" required placeholder="votre@email.com">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" required placeholder="••••••••">
+            </div>
+
+            <div class="remember-forgot">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="rememberMe">
+                    <span>Se souvenir de moi</span>
+                </label>
+            </div>
+
+            <button type="submit" class="login-btn" id="loginBtn">Se connecter</button>
+        </form>
+
+        <div class="register-link">
+            Pas encore de compte ?  <a href="user-register.html">Créer un compte</a>
+        </div>
+
+        <div class="back-home">
+            <a href="index.html">← Retour à la boutique</a>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('loginForm');
+        const errorMsg = document.getElementById('errorMessage');
+        const loginBtn = document.getElementById('loginBtn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const data = {
+                email: document. getElementById('email').value.trim(),
+                password: document.getElementById('password').value,
+                rememberMe: document. getElementById('rememberMe').checked
+            };
+
+            errorMsg.classList. remove('show');
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Connexion... ';
+
+            try {
+                const response = await fetch('http://localhost:3000/api/users/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    // Check if there's a redirect URL (from checkout)
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const redirect = urlParams.get('redirect') || 'user-profile.html';
+                    window.location.href = redirect;
+                } else {
+                    showError(result.error || 'Erreur de connexion');
+                    loginBtn.disabled = false;
+                    loginBtn.textContent = 'Se connecter';
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                showError('Erreur de connexion au serveur');
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Se connecter';
+            }
+        });
+
+        function showError(msg) {
+            errorMsg.textContent = msg;
+            errorMsg.classList.add('show');
+        }
+    </script>
+
+</body>
+</html>

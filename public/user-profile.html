@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Compte - SPORTWEAR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --dark: #0f172a;
+            --gray: #64748b;
+            --light-bg: #f8fafc;
+            --border: #e2e8f0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--light-bg);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* TOP BAR */
+        .top-bar {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 8px 0;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        /* HEADER */
+        .header {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--dark);
+            font-style: italic;
+            text-decoration: none;
+        }
+
+        .logo-text span { color: var(--primary); }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0. 6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #e55a2b;
+        }
+
+        .btn-outline {
+            border: 2px solid var(--border);
+            color: var(--dark);
+        }
+
+        .btn-outline:hover {
+            background: var(--light-bg);
+        }
+
+        /* MAIN CONTAINER */
+        .container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .page-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--gray);
+            margin-bottom: 3rem;
+        }
+
+        /* TABS */
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 2rem;
+        }
+
+        .tab {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .tab:hover {
+            color: var(--dark);
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        /* TAB CONTENT */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* CARDS */
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid var(--border);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1. 5rem;
+            color: var(--dark);
+        }
+
+        /* FORM */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0. 9rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+
+        input:disabled {
+            background: var(--light-bg);
+            cursor: not-allowed;
+        }
+
+        /* BUTTONS */
+        .btn-save {
+            background: var(--dark);
+            color: white;
+            border: none;
+            padding: 0.9rem 2rem;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .btn-save:hover {
+            background: var(--primary);
+        }
+
+        .btn-save:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* ORDERS TABLE */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: var(--light-bg);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 700;
+            color: var(--gray);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 1. 2rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:hover {
+            background: var(--light-bg);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-completed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-cancelled {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--dark);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+
+        .toast.show {
+            display: block;
+        }
+
+        .toast.success {
+            background: #10b981;
+        }
+
+        .toast.error {
+            background: #ef4444;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                overflow-x: auto;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        ⚡ Livraison Gratuite dès 600 DH • Retours sous 30 Jours ⚡
+    </div>
+
+    <header class="header">
+        <div class="nav-container">
+            <a href="index.html" class="logo-text">SPORT<span>WEAR</span></a>
+            <div class="header-actions">
+                <a href="index.html" class="btn btn-outline">Continuer mes achats</a>
+                <button onclick="logout()" class="btn btn-primary">Déconnexion</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 class="page-title">Mon Compte</h1>
+        <p class="page-subtitle">Bienvenue, <span id="userName">... </span></p>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('profile')">Mon Profil</button>
+            <button class="tab" onclick="showTab('orders')">Mes Commandes</button>
+        </div>
+
+        <!-- PROFILE TAB -->
+        <div id="profile" class="tab-content active">
+            <div class="card">
+                <h2 class="card-title">Informations personnelles</h2>
+                <form id="profileForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">Prénom</label>
+                            <input type="text" id="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Nom</label>
+                            <input type="text" id="lastName" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Téléphone</label>
+                        <input type="tel" id="phone">
+                    </div>
+
+                    <h3 style="margin: 2rem 0 1rem; font-size: 1.2rem;">Adresse de livraison</h3>
+
+                    <div class="form-group">
+                        <label for="street">Rue</label>
+                        <input type="text" id="street">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city">Ville</label>
+                            <input type="text" id="city">
+                        </div>
+                        <div class="form-group">
+                            <label for="postalCode">Code postal</label>
+                            <input type="text" id="postalCode">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-save" id="saveBtn">Enregistrer les modifications</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ORDERS TAB -->
+        <div id="orders" class="tab-content">
+            <div class="card">
+                <h2 class="card-title">Historique des commandes</h2>
+                <div id="ordersContainer">
+                    <p style="text-align: center; color: var(--gray); padding: 2rem;">Chargement... </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ====================================
+        // AUTH CHECK
+        // ====================================
+        (async function checkAuth() {
+            try {
+                const res = await fetch('http://localhost:3000/api/users/check', {
+                    credentials: 'include'
+                });
+                const data = await res.json();
+                
+                if (! data.loggedIn) {
+                    window.location.href = 'user-login.html';
+                    return;
+                }
+
+                document.getElementById('userName').textContent = data.user.name;
+                loadProfile();
+                
+            } catch (err) {
+                console.error('Auth error:', err);
+                window.location.href = 'user-login.html';
+            }
+        })();
+
+        // ====================================
+        // LOAD PROFILE
+        // ====================================
+        async function loadProfile() {
+            try {
+                const res = await fetch('http://localhost:3000/api/users/profile', {
+                    credentials: 'include'
+                });
+                const user = await res.json();
+
+                document.getElementById('firstName').value = user.firstName || '';
+                document.getElementById('lastName').value = user.lastName || '';
+                document.getElementById('email'). value = user.email || '';
+                document.getElementById('phone').value = user.phone || '';
+                document.getElementById('street').value = user.address?. street || '';
+                document.getElementById('city').value = user.address?.city || '';
+                document. getElementById('postalCode').value = user.address?.postalCode || '';
+
+            } catch (err) {
+                console.error('Load profile error:', err);
+                showToast('Erreur de chargement du profil', 'error');
+            }
+        }
+
+        // ====================================
+        // SAVE PROFILE
+        // ====================================
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e. preventDefault();
+
+            const data = {
+                firstName: document. getElementById('firstName').value. trim(),
+                lastName: document. getElementById('lastName').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                address: {
+                    street: document.getElementById('street').value.trim(),
+                    city: document. getElementById('city').value.trim(),
+                    postalCode: document.getElementById('postalCode').value.trim(),
+                    country: 'Maroc'
+                }
+            };
+
+            const saveBtn = document.getElementById('saveBtn');
+            saveBtn.disabled = true;
+            saveBtn.textContent = 'Enregistrement...';
+
+            try {
+                const res = await fetch('http://localhost:3000/api/users/profile', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify(data)
+                });
+
+                if (res.ok) {
+                    showToast('Profil mis à jour avec succès', 'success');
+                } else {
+                    showToast('Erreur lors de la mise à jour', 'error');
+                }
+
+            } catch (err) {
+                console.error('Save error:', err);
+                showToast('Erreur de connexion', 'error');
+            } finally {
+                saveBtn. disabled = false;
+                saveBtn.textContent = 'Enregistrer les modifications';
+            }
+        });
+
+        // ====================================
+        // LOAD ORDERS
+        // ====================================
+        async function loadOrders() {
+            try {
+                const res = await fetch('http://localhost:3000/api/users/orders', {
+                    credentials: 'include'
+                });
+                const orders = await res. json();
+
+                const container = document.getElementById('ordersContainer');
+
+                if (orders.length === 0) {
+                    container.innerHTML = '<p style="text-align: center; color: var(--gray); padding: 2rem;">Aucune commande pour le moment</p>';
+                    return;
+                }
+
+                const html = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Commande</th>
+                                <th>Date</th>
+                                <th>Total</th>
+                                <th>Statut</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${orders.map(order => `
+                                <tr>
+                                    <td>#${order._id. slice(-8)}</td>
+                                    <td>${new Date(order. createdAt).toLocaleDateString('fr-FR')}</td>
+                                    <td>${order.totalAmount?. toFixed(2) || '0.00'} DH</td>
+                                    <td><span class="status-badge status-${order.status}">${order.status}</span></td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+
+                container.innerHTML = html;
+
+            } catch (err) {
+                console.error('Load orders error:', err);
+                document.getElementById('ordersContainer').innerHTML = '<p style="text-align: center; color: #ef4444; padding: 2rem;">Erreur de chargement des commandes</p>';
+            }
+        }
+
+        // ====================================
+        // TAB SWITCHING
+        // ====================================
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            document.querySelectorAll('.tab'). forEach(btn => {
+                btn.classList. remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName).classList. add('active');
+            event.target.classList.add('active');
+
+            // Load orders when orders tab is clicked
+            if (tabName === 'orders') {
+                loadOrders();
+            }
+        }
+
+        // ====================================
+        // LOGOUT
+        // ====================================
+        async function logout() {
+            if (! confirm('Voulez-vous vous déconnecter ?')) return;
+
+            try {
+                await fetch('http://localhost:3000/api/users/logout', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                window.location.href = 'index.html';
+            } catch (err) {
+                console.error('Logout error:', err);
+            }
+        }
+
+        // ====================================
+        // TOAST
+        // ====================================
+        function showToast(msg, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.className = `toast show ${type}`;
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+    </script>
+
+</body>
+</html>

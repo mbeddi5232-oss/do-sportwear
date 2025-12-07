@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paiement Annulé - SportWear</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --dark: #0f172a;
+            --gray: #64748b;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card {
+            background: white;
+            padding: 3.5rem;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            max-width: 480px;
+            width: 90%;
+        }
+        .icon-circle {
+            width: 80px;
+            height: 80px;
+            background-color: #fff1f2; /* Fond rouge très pâle */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+        }
+        .icon-svg {
+            width: 35px;
+            height: 35px;
+            color: #e11d48; /* Rouge élégant */
+            stroke-width: 2.5;
+        }
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--dark);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        p {
+            color: var(--gray);
+            line-height: 1.6;
+            margin-bottom: 2.5rem;
+        }
+        .btn-outline {
+            display: inline-block;
+            background-color: white;
+            color: var(--dark);
+            text-decoration: none;
+            padding: 0.9rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        .btn-outline:hover {
+            border-color: var(--dark);
+            background-color: var(--dark);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="icon-circle">
+            <svg class="icon-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </div>
+        
+        <h1>Paiement Annulé</h1>
+        <p>La transaction n'a pas été finalisée. Aucun montant n'a été débité de votre compte. Vous pouvez réessayer à tout moment.</p>
+        
+        <a href="index.html" class="btn-outline">Retourner au panier</a>
+    </div>
+
+</body>
+</html>
