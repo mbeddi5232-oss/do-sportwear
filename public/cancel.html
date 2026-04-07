@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paiement Annule - SPORTWEAR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --dark: #0f172a;
+            --gray: #64748b;
+            --light: #f8fafc;
+            --warning: #f59e0b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* BACKGROUND SHAPES */
+        .bg-shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+
+        .bg-shape-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--warning);
+            top: -100px;
+            left: -100px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .bg-shape-2 {
+            width: 200px;
+            height: 200px;
+            background: var(--primary);
+            bottom: -50px;
+            right: -50px;
+            animation: float 6s ease-in-out infinite 2s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        /* CARD */
+        .cancel-card {
+            background: white;
+            border-radius: 30px;
+            padding: 4rem 3.5rem;
+            text-align: center;
+            max-width: 520px;
+            box-shadow: 0 25px 80px rgba(245, 158, 11, 0.15);
+            animation: cardSlide 0.6s ease;
+            position: relative;
+            z-index: 10;
+        }
+
+        @keyframes cardSlide {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* X CIRCLE */
+        .x-circle {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            animation: shake 0.5s ease 0.3s;
+            box-shadow: 0 15px 40px rgba(245, 158, 11, 0.35);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-10px); }
+            40% { transform: translateX(10px); }
+            60% { transform: translateX(-10px); }
+            80% { transform: translateX(10px); }
+        }
+
+        .x-icon {
+            width: 50px;
+            height: 50px;
+            stroke: white;
+            stroke-width: 4;
+            stroke-linecap: round;
+        }
+
+        .x-icon line {
+            stroke-dasharray: 50;
+            stroke-dashoffset: 50;
+            animation: drawX 0.4s ease 0.5s forwards;
+        }
+
+        .x-icon line:nth-child(2) {
+            animation-delay: 0.7s;
+        }
+
+        @keyframes drawX {
+            to { stroke-dashoffset: 0; }
+        }
+
+        .cancel-card h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.3rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            animation: fadeUp 0.5s ease 0.6s both;
+        }
+
+        .cancel-card .subtitle {
+            font-size: 1.05rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+            animation: fadeUp 0.5s ease 0.8s both;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* REASSURANCE BOX */
+        .reassure-box {
+            background: linear-gradient(135deg, #fefce8 0%, #fef9c3 100%);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            animation: fadeUp 0.5s ease 1s both;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .reassure-box h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .reassure-list {
+            list-style: none;
+            text-align: left;
+        }
+
+        .reassure-list li {
+            padding: 0.5rem 0;
+            color: var(--gray);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.95rem;
+        }
+
+        .reassure-list li svg {
+            width: 20px;
+            height: 20px;
+            color: var(--warning);
+            flex-shrink: 0;
+        }
+
+        /* BUTTONS */
+        .buttons {
+            display: flex;
+            gap: 1rem;
+            animation: fadeUp 0.5s ease 1.2s both;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, #e55a2b 100%);
+            color: white;
+            border: none;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--dark);
+            border: 2px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* HELP */
+        .help-section {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e2e8f0;
+            animation: fadeUp 0.5s ease 1.4s both;
+        }
+
+        .help-section p {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .help-section a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            .cancel-card {
+                margin: 1rem;
+                padding: 3rem 2rem;
+            }
+            .cancel-card h1 {
+                font-size: 1.8rem;
+            }
+            .x-circle {
+                width: 100px;
+                height: 100px;
+            }
+            .x-icon {
+                width: 40px;
+                height: 40px;
+            }
+            .buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-shape bg-shape-1"></div>
+    <div class="bg-shape bg-shape-2"></div>
+
+    <div class="cancel-card">
+        <div class="x-circle">
+            <svg class="x-icon" viewBox="0 0 50 50">
+                <line x1="15" y1="15" x2="35" y2="35"></line>
+                <line x1="35" y1="15" x2="15" y2="35"></line>
+            </svg>
+        </div>
+
+        <h1>Paiement Annule</h1>
+        <p class="subtitle">
+            Votre paiement a ete annule. Ne vous inquietez pas, aucun montant n'a ete debite de votre compte.
+        </p>
+
+        <div class="reassure-box">
+            <h3>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Pas de souci!
+            </h3>
+            <ul class="reassure-list">
+                <li>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    Votre panier est toujours sauvegarde
+                </li>
+                <li>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    Aucune transaction n'a ete effectuee
+                </li>
+                <li>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    Vous pouvez reessayer a tout moment
+                </li>
+            </ul>
+        </div>
+
+        <div class="buttons">
+            <a href="index.html" class="btn btn-secondary">
+                Retour a l'accueil
+            </a>
+            <a href="produits.html" class="btn btn-primary">
+                Reprendre mes achats
+            </a>
+        </div>
+
+        <div class="help-section">
+            <p>Vous avez rencontre un probleme?</p>
+            <a href="contact.html">Contactez notre support</a>
+        </div>
+    </div>
+</body>
+</html>

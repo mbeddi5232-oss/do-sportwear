@@ -1,0 +1,1607 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - SPORTWEAR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-glow: rgba(255, 107, 53, 0.3);
+            --dark: #0a0a0f;
+            --dark-card: #12121a;
+            --dark-hover: #1a1a25;
+            --border: rgba(255,255,255,0.08);
+            --text: #ffffff;
+            --text-dim: #6b7280;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            --purple: #8b5cf6;
+            --cyan: #06b6d4;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        /* LIGHT THEME */
+        body.light-theme {
+            --dark: #f8fafc;
+            --dark-card: #ffffff;
+            --dark-hover: #f1f5f9;
+            --border: rgba(0,0,0,0.08);
+            --text: #1e293b;
+            --text-dim: #64748b;
+        }
+
+        body.light-theme .bg-effects::before,
+        body.light-theme .bg-effects::after {
+            opacity: 0.3;
+        }
+
+        body.light-theme .sidebar {
+            background: rgba(255,255,255,0.95);
+            border-color: var(--border);
+        }
+
+        body.light-theme .stat-icon svg,
+        body.light-theme .nav-item svg {
+            stroke: var(--text-dim);
+        }
+
+        body.light-theme .nav-item.active svg,
+        body.light-theme .nav-item:hover svg {
+            stroke: var(--primary);
+        }
+
+        body.light-theme .modal-content {
+            background: var(--dark-card);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+
+        body.light-theme .product-card {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        body.light-theme .chart-bar {
+            background: linear-gradient(180deg, var(--primary) 0%, rgba(255,107,53,0.6) 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* Animated Background */
+        .bg-effects {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-effects::before {
+            content: '';
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.15) 0%, transparent 70%);
+            top: -400px;
+            left: -200px;
+            animation: float1 20s ease-in-out infinite;
+        }
+
+        .bg-effects::after {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 107, 53, 0.1) 0%, transparent 70%);
+            bottom: -200px;
+            right: -100px;
+            animation: float2 25s ease-in-out infinite;
+        }
+
+        @keyframes float1 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(100px, 50px) rotate(180deg); }
+        }
+
+        @keyframes float2 {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-80px, -60px); }
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: rgba(18, 18, 26, 0.95);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .sidebar-logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            font-style: italic;
+            margin-bottom: 0.5rem;
+            text-decoration: none;
+            display: block;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .sidebar-logo:hover { transform: scale(1.02); }
+        .sidebar-logo span { color: var(--primary); }
+
+        .sidebar-subtitle {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-section { margin-bottom: 2rem; }
+
+        .nav-label {
+            color: var(--text-dim);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            padding-left: 1rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            color: var(--text-dim);
+            text-decoration: none;
+            border-radius: 14px;
+            margin-bottom: 6px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
+            font-size: 0.95rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 3px;
+            height: 100%;
+            background: var(--primary);
+            transform: scaleY(0);
+            transition: transform 0.3s;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.05);
+            color: var(--text);
+            transform: translateX(5px);
+        }
+
+        .nav-item:hover::before { transform: scaleY(1); }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(255,107,53,0.2) 0%, rgba(255,107,53,0.05) 100%);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .nav-item.active::before { transform: scaleY(1); }
+
+        .nav-item svg {
+            width: 22px;
+            height: 22px;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            fill: none;
+            flex-shrink: 0;
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: var(--primary);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 14px;
+            margin-bottom: 1rem;
+        }
+
+        .admin-avatar {
+            width: 45px;
+            height: 45px;
+            background: var(--gradient-1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .admin-info h4 { font-size: 0.9rem; font-weight: 600; }
+        .admin-info p { font-size: 0.75rem; color: var(--text-dim); }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 14px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 12px;
+            color: #fca5a5;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .logout-btn:hover {
+            background: var(--danger);
+            border-color: var(--danger);
+            color: white;
+            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.3);
+        }
+
+        .logout-btn svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem 2.5rem;
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+        }
+
+        /* ===== TOP BAR ===== */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .topbar-left h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .topbar-left p {
+            color: var(--text-dim);
+            margin-top: 0.25rem;
+        }
+
+        .topbar-right {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--dark-card);
+            padding: 12px 18px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            min-width: 280px;
+            transition: all 0.3s;
+        }
+
+        .search-box:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-glow);
+        }
+
+        .search-box input {
+            background: none;
+            border: none;
+            outline: none;
+            color: var(--text);
+            flex: 1;
+            font-size: 0.9rem;
+        }
+
+        .search-box input::placeholder { color: var(--text-dim); }
+
+        .search-box svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--text-dim);
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .topbar-btn {
+            width: 48px;
+            height: 48px;
+            background: var(--dark-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .topbar-btn:hover {
+            background: var(--dark-hover);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .topbar-btn svg {
+            width: 22px;
+            height: 22px;
+            stroke: var(--text-dim);
+            stroke-width: 1.8;
+            fill: none;
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 10px;
+            height: 10px;
+            background: var(--danger);
+            border-radius: 50%;
+            border: 2px solid var(--dark-card);
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* ===== STATS CARDS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-card {
+            background: var(--dark-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.75rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .stat-card:nth-child(1)::before { background: var(--gradient-4); }
+        .stat-card:nth-child(2)::before { background: var(--gradient-3); }
+        .stat-card:nth-child(3)::before { background: var(--gradient-1); }
+        .stat-card:nth-child(4)::before { background: var(--gradient-2); }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255,255,255,0.15);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            opacity: 0.05;
+            transform: translate(30%, -30%);
+        }
+
+        .stat-card:nth-child(1)::after { background: var(--success); }
+        .stat-card:nth-child(2)::after { background: var(--info); }
+        .stat-card:nth-child(3)::after { background: var(--purple); }
+        .stat-card:nth-child(4)::after { background: var(--warning); }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.25rem;
+        }
+
+        .stat-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-card:nth-child(1) .stat-icon { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+        .stat-card:nth-child(2) .stat-icon { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
+        .stat-card:nth-child(3) .stat-icon { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); }
+        .stat-card:nth-child(4) .stat-icon { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+
+        .stat-icon svg {
+            width: 26px;
+            height: 26px;
+            stroke: white;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .stat-change {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+
+        .stat-change.up {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+
+        .stat-change.down {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+        }
+
+        .stat-label {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        /* ===== GRID LAYOUT ===== */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--dark-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.75rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .card-action {
+            background: rgba(255,107,53,0.1);
+            border: 1px solid rgba(255,107,53,0.2);
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .card-action:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Chart placeholder */
+        .chart-container {
+            height: 280px;
+            background: linear-gradient(180deg, rgba(102, 126, 234, 0.1) 0%, transparent 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .chart-bar {
+            width: 40px;
+            background: var(--gradient-1);
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .chart-bar:hover {
+            filter: brightness(1.2);
+            transform: scaleY(1.05);
+        }
+
+        .chart-bar::after {
+            content: attr(data-value);
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-dim);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .chart-bar:hover::after { opacity: 1; }
+
+        .chart-labels {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-around;
+            padding: 0 1.5rem;
+            transform: translateY(25px);
+        }
+
+        .chart-labels span {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+        }
+
+        /* Recent Activity */
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 14px;
+            transition: all 0.3s;
+        }
+
+        .activity-item:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .activity-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .activity-icon.order { background: rgba(59, 130, 246, 0.15); }
+        .activity-icon.order svg { stroke: var(--info); }
+        .activity-icon.user { background: rgba(139, 92, 246, 0.15); }
+        .activity-icon.user svg { stroke: var(--purple); }
+        .activity-icon.product { background: rgba(16, 185, 129, 0.15); }
+        .activity-icon.product svg { stroke: var(--success); }
+
+        .activity-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .activity-info {
+            flex: 1;
+        }
+
+        .activity-info h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .activity-info p {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        .activity-time {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+        }
+
+        /* ===== PRODUCTS SECTION ===== */
+        .products-section {
+            margin-top: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .add-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px var(--primary-glow);
+        }
+
+        .add-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px var(--primary-glow);
+        }
+
+        .add-btn svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background: var(--dark-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255,255,255,0.15);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #1a1a25;
+        }
+
+        .product-info {
+            padding: 1.25rem;
+        }
+
+        .product-name {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .product-price {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .product-stock {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            background: rgba(255,255,255,0.05);
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .product-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .product-btn.edit {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--info);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .product-btn.edit:hover {
+            background: var(--info);
+            color: white;
+        }
+
+        .product-btn.delete {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .product-btn.delete:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .product-btn svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        /* ===== MODAL ===== */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal.active { display: flex; }
+
+        .modal-content {
+            background: var(--dark-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2rem;
+            width: 500px;
+            max-width: 95%;
+            animation: modalSlide 0.3s ease;
+        }
+
+        @keyframes modalSlide {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.05);
+            border: none;
+            border-radius: 10px;
+            color: var(--text-dim);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            font-size: 1.5rem;
+        }
+
+        .modal-close:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-glow);
+        }
+
+        .form-group textarea { resize: vertical; min-height: 100px; }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 0.5rem;
+        }
+
+        .submit-btn:hover {
+            box-shadow: 0 10px 30px var(--primary-glow);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 1200px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%); }
+            .main-content { margin-left: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .topbar { flex-direction: column; gap: 1rem; align-items: stretch; }
+            .search-box { min-width: auto; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-effects"></div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <a href="index.html" class="sidebar-logo">SPORT<span>WEAR</span></a>
+        <p class="sidebar-subtitle">Administration</p>
+
+        <nav>
+            <div class="nav-section">
+                <p class="nav-label">Menu Principal</p>
+                <a href="#" class="nav-item active">
+                    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    Dashboard
+                </a>
+                <a href="#products" class="nav-item" onclick="scrollToProducts()">
+                    <svg viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                    Produits
+                    <span class="nav-badge" id="productCount">0</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                    Commandes
+                    <span class="nav-badge">12</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+                    Clients
+                </a>
+                <a href="#" class="nav-item">
+                    <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    Avis
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <p class="nav-label">Parametres</p>
+                <a href="#" class="nav-item">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+                    Parametres
+                </a>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="admin-profile">
+                <div class="admin-avatar" id="adminInitials">AD</div>
+                <div class="admin-info">
+                    <h4 id="adminName">Admin</h4>
+                    <p id="adminRole">Super Admin</p>
+                </div>
+            </div>
+            <button class="logout-btn" onclick="logout()">
+                <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+                Deconnexion
+            </button>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <div class="topbar-left">
+                <h1>Tableau de bord</h1>
+                <p>Bienvenue! Voici un apercu de votre activite</p>
+            </div>
+            <div class="topbar-right">
+                <div class="search-box">
+                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                    <input type="text" placeholder="Rechercher..." id="searchInput">
+                </div>
+                <!-- THEME TOGGLE -->
+                <button class="topbar-btn theme-toggle" onclick="toggleTheme()" title="Changer le theme">
+                    <svg class="sun-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                    <svg class="moon-icon" viewBox="0 0 24 24" style="display:none;"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+                </button>
+                <button class="topbar-btn" onclick="alert('Notifications: Aucune nouvelle notification')">
+                    <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+                    <span class="notification-dot"></span>
+                </button>
+                <button class="topbar-btn" onclick="window.location.href='index.html'">
+                    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+                    </div>
+                    <span class="stat-change up">+12.5%</span>
+                </div>
+                <p class="stat-label">Chiffre d'affaires</p>
+                <h2 class="stat-value" id="revenueValue">0 DH</h2>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                        <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                    </div>
+                    <span class="stat-change up">+8.2%</span>
+                </div>
+                <p class="stat-label">Commandes totales</p>
+                <h2 class="stat-value" id="ordersValue">0</h2>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+                    </div>
+                    <span class="stat-change up">+15.3%</span>
+                </div>
+                <p class="stat-label">Clients inscrits</p>
+                <h2 class="stat-value" id="customersValue">0</h2>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                        <svg viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                    </div>
+                    <span class="stat-change down">-2.1%</span>
+                </div>
+                <p class="stat-label">Produits actifs</p>
+                <h2 class="stat-value" id="productsValue">0</h2>
+            </div>
+        </div>
+
+        <!-- CHARTS & ACTIVITY -->
+        <div class="dashboard-grid">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Ventes mensuelles</h3>
+                    <button class="card-action">Voir details</button>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-bar" style="height: 40%;" data-value="12k"></div>
+                    <div class="chart-bar" style="height: 65%;" data-value="19k"></div>
+                    <div class="chart-bar" style="height: 45%;" data-value="14k"></div>
+                    <div class="chart-bar" style="height: 80%;" data-value="25k"></div>
+                    <div class="chart-bar" style="height: 55%;" data-value="17k"></div>
+                    <div class="chart-bar" style="height: 90%;" data-value="28k"></div>
+                    <div class="chart-bar" style="height: 70%;" data-value="22k"></div>
+                    <div class="chart-bar" style="height: 85%;" data-value="26k"></div>
+                    <div class="chart-bar" style="height: 60%;" data-value="19k"></div>
+                    <div class="chart-bar" style="height: 75%;" data-value="23k"></div>
+                    <div class="chart-bar" style="height: 95%;" data-value="30k"></div>
+                    <div class="chart-bar" style="height: 100%;" data-value="32k"></div>
+                    <div class="chart-labels">
+                        <span>Jan</span><span>Fev</span><span>Mar</span><span>Avr</span>
+                        <span>Mai</span><span>Jun</span><span>Jul</span><span>Aou</span>
+                        <span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Activite recente</h3>
+                </div>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-icon order">
+                            <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                        </div>
+                        <div class="activity-info">
+                            <h4>Nouvelle commande #1234</h4>
+                            <p>3 articles - 899 DH</p>
+                        </div>
+                        <span class="activity-time">Il y a 5 min</span>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon user">
+                            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        </div>
+                        <div class="activity-info">
+                            <h4>Nouveau client inscrit</h4>
+                            <p>Ahmed M. - Casablanca</p>
+                        </div>
+                        <span class="activity-time">Il y a 15 min</span>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon product">
+                            <svg viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                        </div>
+                        <div class="activity-info">
+                            <h4>Stock mis a jour</h4>
+                            <p>T-shirt Nike - +50 unites</p>
+                        </div>
+                        <span class="activity-time">Il y a 1h</span>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon order">
+                            <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                        </div>
+                        <div class="activity-info">
+                            <h4>Commande livree #1230</h4>
+                            <p>Livraison confirmee</p>
+                        </div>
+                        <span class="activity-time">Il y a 2h</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PRODUCTS SECTION -->
+        <div class="products-section" id="products">
+            <div class="section-header">
+                <h2 class="section-title">Gestion des produits</h2>
+                <button class="add-btn" onclick="openProductModal()">
+                    <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                    Ajouter un produit
+                </button>
+            </div>
+            <div class="products-grid" id="productsGrid">
+                <!-- Products loaded here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- PRODUCT MODAL (ADD/EDIT) -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Ajouter un produit</h2>
+                <button class="modal-close" onclick="closeProductModal()">&times;</button>
+            </div>
+            <form id="productForm">
+                <!-- Hidden field for edit mode -->
+                <input type="hidden" id="editProductId" value="">
+                <div class="form-group">
+                    <label>Nom du produit</label>
+                    <input type="text" id="productName" placeholder="Ex: T-shirt Nike Pro" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Prix (DH)</label>
+                        <input type="number" id="productPrice" placeholder="299" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Stock</label>
+                        <input type="number" id="productStock" placeholder="100" value="100">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Categorie</label>
+                    <select id="productCategory">
+                        <option value="homme">Homme</option>
+                        <option value="femme">Femme</option>
+                        <option value="accessoires">Accessoires</option>
+                        <option value="chaussures">Chaussures</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>URL de l'image</label>
+                    <input type="text" id="productImage" placeholder="product-1.jpg">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="productDescription" placeholder="Description du produit..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn" id="submitBtn">Enregistrer le produit</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // ==================== THEME TOGGLE ====================
+        function initTheme() {
+            const savedTheme = localStorage.getItem('adminTheme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+                updateThemeIcons(true);
+            }
+        }
+
+        function toggleTheme() {
+            const isLight = document.body.classList.toggle('light-theme');
+            localStorage.setItem('adminTheme', isLight ? 'light' : 'dark');
+            updateThemeIcons(isLight);
+        }
+
+        function updateThemeIcons(isLight) {
+            const sunIcon = document.querySelector('.sun-icon');
+            const moonIcon = document.querySelector('.moon-icon');
+            if (sunIcon && moonIcon) {
+                sunIcon.style.display = isLight ? 'none' : 'block';
+                moonIcon.style.display = isLight ? 'block' : 'none';
+            }
+        }
+
+        // Initialize theme on load
+        initTheme();
+
+        // ==================== AUTHENTICATION ====================
+        async function checkAuth() {
+            try {
+                const res = await fetch('/api/admin/check');
+                const data = await res.json();
+                
+                if (!data.loggedIn) {
+                    window.location.href = 'admin-login.html';
+                    return;
+                }
+                
+                // Update admin info
+                document.getElementById('adminName').textContent = data.admin.name;
+                document.getElementById('adminRole').textContent = data.admin.role === 'super_admin' ? 'Super Admin' : 'Moderateur';
+                document.getElementById('adminInitials').textContent = data.admin.name.split(' ').map(n => n[0]).join('').toUpperCase();
+            } catch (error) {
+                console.error('Auth check failed:', error);
+            }
+        }
+
+        async function logout() {
+            try {
+                await fetch('/api/admin/logout', { method: 'POST' });
+                window.location.href = 'admin-login.html';
+            } catch (error) {
+                window.location.href = 'admin-login.html';
+            }
+        }
+
+        // ==================== DASHBOARD DATA (REAL STATS) ====================
+        async function loadDashboard() {
+            try {
+                // Load real stats from API
+                const statsRes = await fetch('/api/admin/stats');
+                if (statsRes.ok) {
+                    const stats = await statsRes.json();
+                    
+                    // Set real values
+                    document.getElementById('revenueValue').textContent = stats.revenue.toLocaleString() + ' DH';
+                    document.getElementById('ordersValue').textContent = stats.ordersCount.toString();
+                    document.getElementById('customersValue').textContent = stats.customersCount.toString();
+                    document.getElementById('productsValue').textContent = stats.productsCount.toString();
+                    document.getElementById('productCount').textContent = stats.productsCount.toString();
+                    
+                    // Animate values
+                    setTimeout(() => {
+                        animateValue('revenueValue', stats.revenue);
+                        animateValue('ordersValue', stats.ordersCount);
+                        animateValue('customersValue', stats.customersCount);
+                        animateValue('productsValue', stats.productsCount);
+                    }, 300);
+
+                    // Update recent activity if available
+                    if (stats.recentOrders && stats.recentOrders.length > 0) {
+                        updateActivity(stats.recentOrders, stats.recentUsers);
+                    }
+                } else {
+                    // Fallback to basic data
+                    loadBasicStats();
+                }
+
+                // Load products
+                const productsRes = await fetch('/api/products');
+                const products = await productsRes.json();
+                renderProducts(products);
+
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                loadBasicStats();
+            }
+        }
+
+        // Fallback for basic stats
+        async function loadBasicStats() {
+            try {
+                const productsRes = await fetch('/api/products');
+                const products = await productsRes.json();
+                document.getElementById('productsValue').textContent = products.length;
+                document.getElementById('productCount').textContent = products.length;
+                renderProducts(products);
+            } catch (e) {
+                console.error('Error loading basic stats:', e);
+            }
+        }
+
+        // Update activity feed with real data
+        function updateActivity(orders, users) {
+            const activityList = document.querySelector('.activity-list');
+            if (!activityList) return;
+
+            let html = '';
+
+            orders.slice(0, 4).forEach(order => {
+                const timeAgo = getTimeAgo(new Date(order.createdAt));
+                const itemCount = order.items?.length || 1;
+                html += `
+                    <div class="activity-item">
+                        <div class="activity-icon order">
+                            <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                        </div>
+                        <div class="activity-info">
+                            <h4>Commande ${order.trackingNumber || '#' + order._id.slice(-4)}</h4>
+                            <p>${itemCount} article${itemCount > 1 ? 's' : ''} - ${order.totalAmount} DH</p>
+                        </div>
+                        <span class="activity-time">${timeAgo}</span>
+                    </div>
+                `;
+            });
+
+            activityList.innerHTML = html || activityList.innerHTML;
+        }
+
+        function getTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            if (seconds < 60) return 'Il y a quelques sec';
+            if (seconds < 3600) return `Il y a ${Math.floor(seconds / 60)} min`;
+            if (seconds < 86400) return `Il y a ${Math.floor(seconds / 3600)}h`;
+            return `Il y a ${Math.floor(seconds / 86400)}j`;
+        }
+
+        // ==================== PRODUCTS RENDERING ====================
+        function renderProducts(products) {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = products.map(p => `
+                <div class="product-card">
+                    <img src="/${p.img || p.image || 'product-1.jpg'}" class="product-image" alt="${p.name}" onerror="this.src='https://via.placeholder.com/280x200/1a1a25/666?text=Image'">
+                    <div class="product-info">
+                        <h3 class="product-name">${p.name}</h3>
+                        <div class="product-meta">
+                            <span class="product-price">${p.price} DH</span>
+                            <span class="product-stock">Stock: ${p.stock || 100}</span>
+                        </div>
+                        <div class="product-actions">
+                            <button class="product-btn edit" onclick="editProduct('${p._id}')">
+                                <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                Modifier
+                            </button>
+                            <button class="product-btn delete" onclick="deleteProduct('${p._id}')">
+                                <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+                                Supprimer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ==================== MODAL FUNCTIONS ====================
+        function openProductModal() {
+            document.getElementById('productModal').classList.add('active');
+            document.getElementById('modalTitle').textContent = 'Ajouter un produit';
+            document.getElementById('submitBtn').textContent = 'Enregistrer le produit';
+            document.getElementById('productForm').reset();
+            document.getElementById('editProductId').value = '';
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModal').classList.remove('active');
+            document.getElementById('editProductId').value = '';
+        }
+
+        // ==================== EDIT PRODUCT (FULL MODAL) ====================
+        async function editProduct(id) {
+            try {
+                // Fetch product data
+                const res = await fetch(`/api/products/${id}`);
+                if (!res.ok) throw new Error('Product not found');
+                const product = await res.json();
+
+                // Populate modal with product data
+                document.getElementById('editProductId').value = id;
+                document.getElementById('productName').value = product.name || '';
+                document.getElementById('productPrice').value = product.price || '';
+                document.getElementById('productStock').value = product.stock || 100;
+                document.getElementById('productCategory').value = product.category || 'homme';
+                document.getElementById('productImage').value = product.img || product.image || '';
+                document.getElementById('productDescription').value = product.description || '';
+
+                // Update modal title and button
+                document.getElementById('modalTitle').textContent = 'Modifier le produit';
+                document.getElementById('submitBtn').textContent = 'Mettre a jour';
+
+                // Open modal
+                document.getElementById('productModal').classList.add('active');
+
+            } catch (error) {
+                console.error('Error fetching product:', error);
+                alert('Erreur lors du chargement du produit');
+            }
+        }
+
+        // ==================== DELETE PRODUCT ====================
+        async function deleteProduct(id) {
+            if (!confirm('Etes-vous sur de vouloir supprimer ce produit?')) return;
+            
+            try {
+                await fetch(`/api/products/${id}`, { method: 'DELETE' });
+                loadDashboard();
+            } catch (error) {
+                console.error('Error deleting product:', error);
+            }
+        }
+
+        // ==================== FORM SUBMIT (ADD/EDIT) ====================
+        document.getElementById('productForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const editId = document.getElementById('editProductId').value;
+            const isEdit = editId && editId.length > 0;
+            
+            const product = {
+                name: document.getElementById('productName').value,
+                price: parseFloat(document.getElementById('productPrice').value),
+                stock: parseInt(document.getElementById('productStock').value) || 100,
+                category: document.getElementById('productCategory').value,
+                img: document.getElementById('productImage').value || 'product-1.jpg',
+                description: document.getElementById('productDescription').value
+            };
+
+            try {
+                let res;
+                if (isEdit) {
+                    // UPDATE existing product
+                    res = await fetch(`/api/products/${editId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(product)
+                    });
+                } else {
+                    // CREATE new product
+                    res = await fetch('/api/products', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(product)
+                    });
+                }
+
+                if (res.ok) {
+                    closeProductModal();
+                    loadDashboard();
+                    alert(isEdit ? 'Produit mis a jour avec succes!' : 'Produit ajoute avec succes!');
+                } else {
+                    const error = await res.json();
+                    alert(error.error || 'Erreur lors de l\'operation');
+                }
+            } catch (error) {
+                console.error('Error saving product:', error);
+                alert('Erreur de connexion au serveur');
+            }
+        });
+
+        // ==================== SEARCH ====================
+        document.getElementById('searchInput').addEventListener('input', async (e) => {
+            const query = e.target.value.toLowerCase();
+            const productsRes = await fetch('/api/products');
+            const products = await productsRes.json();
+            
+            const filtered = products.filter(p => 
+                p.name.toLowerCase().includes(query) ||
+                (p.category && p.category.toLowerCase().includes(query))
+            );
+            
+            renderProducts(filtered);
+        });
+
+        // ==================== UTILITIES ====================
+        function scrollToProducts() {
+            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function animateValue(id, end, duration = 1500) {
+            const obj = document.getElementById(id);
+            if (!obj) return;
+            
+            const text = obj.textContent;
+            const suffix = text.replace(/[\d,]/g, '') || '';
+            
+            let start = 0;
+            const startTime = performance.now();
+            
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const value = Math.floor(eased * end);
+                obj.textContent = value.toLocaleString() + suffix;
+                
+                if (progress < 1) requestAnimationFrame(update);
+            }
+            
+            requestAnimationFrame(update);
+        }
+
+        // ==================== INITIALIZE ====================
+        checkAuth();
+        loadDashboard();
+    </script>
+</body>
+</html>

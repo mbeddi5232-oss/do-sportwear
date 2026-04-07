@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creer un compte - SPORTWEAR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #e55a2b;
+            --dark: #0f172a;
+            --gray: #64748b;
+            --light: #f8fafc;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            background: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* LEFT SIDE - BRANDING */
+        .brand-side {
+            flex: 1;
+            background: linear-gradient(135deg, var(--dark) 0%, #1e293b 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-side::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: var(--primary);
+            opacity: 0.1;
+            border-radius: 50%;
+            top: -200px;
+            left: -200px;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        .brand-side::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: var(--primary);
+            opacity: 0.05;
+            border-radius: 50%;
+            bottom: -100px;
+            right: -100px;
+            animation: pulse 4s ease-in-out infinite 1s;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .brand-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: white;
+        }
+
+        .brand-logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            animation: slideInRight 0.8s ease;
+        }
+
+        .brand-logo span { color: var(--primary); }
+
+        .brand-tagline {
+            font-size: 1.3rem;
+            opacity: 0.8;
+            margin-bottom: 3rem;
+            animation: slideInRight 0.8s ease 0.2s both;
+        }
+
+        .testimonial {
+            animation: slideInRight 0.8s ease 0.4s both;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 400px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .testimonial-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+            opacity: 0.9;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .author-info h4 {
+            font-weight: 600;
+        }
+
+        .author-info p {
+            font-size: 0.85rem;
+            opacity: 0.7;
+        }
+
+        .stars {
+            color: #fbbf24;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* RIGHT SIDE - FORM */
+        .form-side {
+            flex: 1.2;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 4rem;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 500px;
+            animation: slideInLeft 0.8s ease;
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .form-header {
+            margin-bottom: 2rem;
+        }
+
+        .form-header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-header p {
+            color: var(--gray);
+            font-size: 1rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s;
+            outline: none;
+            background: var(--light);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #94a3b8;
+        }
+
+        .password-strength {
+            height: 4px;
+            background: #e2e8f0;
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s;
+            border-radius: 2px;
+        }
+
+        .strength-weak { width: 33%; background: #ef4444; }
+        .strength-medium { width: 66%; background: #f59e0b; }
+        .strength-strong { width: 100%; background: #10b981; }
+
+        .terms {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .terms input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary);
+            cursor: pointer;
+            margin-top: 2px;
+        }
+
+        .terms label {
+            font-size: 0.9rem;
+            color: var(--gray);
+            line-height: 1.5;
+        }
+
+        .terms a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 1.1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .register-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .register-btn:hover::before {
+            left: 100%;
+        }
+
+        .register-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--gray);
+        }
+
+        .login-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .back-home {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gray);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .back-home:hover {
+            color: var(--primary);
+        }
+
+        /* ERROR/SUCCESS MESSAGE */
+        .message {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .error-message {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+        }
+
+        .success-message {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #16a34a;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .brand-side {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .form-side {
+                padding: 2rem;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .form-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-side">
+        <a href="index.html" class="back-home">
+            ← Retour a l'accueil
+        </a>
+
+        <div class="form-container">
+            <div class="form-header">
+                <h1>Rejoignez-nous</h1>
+                <p>Creez votre compte en quelques secondes</p>
+            </div>
+
+            <div class="message error-message" id="errorMsg"></div>
+            <div class="message success-message" id="successMsg"></div>
+
+            <form id="registerForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Prenom</label>
+                        <input type="text" id="firstName" placeholder="Votre prenom" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Nom</label>
+                        <input type="text" id="lastName" placeholder="Votre nom" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Adresse email</label>
+                    <input type="email" id="email" placeholder="exemple@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Telephone</label>
+                    <input type="tel" id="phone" placeholder="06 XX XX XX XX" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Mot de passe</label>
+                        <input type="password" id="password" placeholder="Min. 8 caracteres" required minlength="8" oninput="checkPasswordStrength(this.value)">
+                        <div class="password-strength">
+                            <div class="password-strength-bar" id="strengthBar"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirmer</label>
+                        <input type="password" id="confirmPassword" placeholder="Confirmer" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Ville</label>
+                    <select id="city" required>
+                        <option value="">Selectionnez votre ville</option>
+                        <option value="Casablanca">Casablanca</option>
+                        <option value="Rabat">Rabat</option>
+                        <option value="Marrakech">Marrakech</option>
+                        <option value="Fes">Fes</option>
+                        <option value="Tanger">Tanger</option>
+                        <option value="Agadir">Agadir</option>
+                        <option value="Meknes">Meknes</option>
+                        <option value="Oujda">Oujda</option>
+                        <option value="Kenitra">Kenitra</option>
+                        <option value="Tetouan">Tetouan</option>
+                        <option value="Autre">Autre</option>
+                    </select>
+                </div>
+
+                <div class="terms">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms">
+                        J'accepte les <a href="#">Conditions d'utilisation</a> et la <a href="#">Politique de confidentialite</a>
+                    </label>
+                </div>
+
+                <button type="submit" class="register-btn">CREER MON COMPTE</button>
+            </form>
+
+            <p class="login-link">
+                Deja un compte? <a href="user-login.html">Se connecter</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="brand-side">
+        <div class="brand-content">
+            <div class="brand-logo">SPORT<span>WEAR</span></div>
+            <p class="brand-tagline">Rejoignez notre communaute d'athletes</p>
+            
+            <div class="testimonial">
+                <div class="stars">★★★★★</div>
+                <p class="testimonial-text">
+                    "Les meilleurs produits sportifs que j'ai trouve au Maroc! Livraison rapide et qualite au top. Je recommande a 100%."
+                </p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">YB</div>
+                    <div class="author-info">
+                        <h4>Youssef B.</h4>
+                        <p>Client depuis 2024</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function checkPasswordStrength(password) {
+            const bar = document.getElementById('strengthBar');
+            bar.className = 'password-strength-bar';
+            
+            if (password.length < 6) {
+                bar.classList.add('strength-weak');
+            } else if (password.length < 10 || !/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
+                bar.classList.add('strength-medium');
+            } else {
+                bar.classList.add('strength-strong');
+            }
+        }
+
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const city = document.getElementById('city').value;
+            
+            const errorMsg = document.getElementById('errorMsg');
+            const successMsg = document.getElementById('successMsg');
+            const btn = e.target.querySelector('button[type="submit"]');
+
+            errorMsg.style.display = 'none';
+            successMsg.style.display = 'none';
+
+            // Validation
+            if (password !== confirmPassword) {
+                errorMsg.textContent = 'Les mots de passe ne correspondent pas';
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            btn.textContent = 'Creation...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('/api/users/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        firstName,
+                        lastName,
+                        email,
+                        phone,
+                        password,
+                        address: {
+                            city: city
+                        }
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    successMsg.textContent = 'Compte cree avec succes! Redirection...';
+                    successMsg.style.display = 'block';
+                    setTimeout(() => {
+                        window.location.href = 'user-login.html';
+                    }, 2000);
+                } else {
+                    errorMsg.textContent = data.error || 'Erreur lors de la creation du compte';
+                    errorMsg.style.display = 'block';
+                    btn.textContent = 'CREER MON COMPTE';
+                    btn.disabled = false;
+                }
+            } catch (error) {
+                errorMsg.textContent = 'Erreur de connexion au serveur';
+                errorMsg.style.display = 'block';
+                btn.textContent = 'CREER MON COMPTE';
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
