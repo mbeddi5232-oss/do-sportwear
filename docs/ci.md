@@ -49,6 +49,7 @@ sport-clothes/
 ├── docs/
 │ └── ci.md
 ├── public/
+├── tests/
 ├── Jenkinsfile
 ├── eslint.config.mjs
 ├── generate-secret.js
