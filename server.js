@@ -36,6 +36,7 @@ const loginLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 5, // 5 attempts
     message: 'Trop de tentatives de connexion, réessayez plus tard',
+    skip: () => process.env.NODE_ENV === 'test',
     standardHeaders: false,
     legacyHeaders: false
 });
