@@ -133,78 +133,161 @@ npm run dev
 npm test
 ```
 
-### Partie ajoutee : tests unitaires et tests d'integration API
+---
 
-Une nouvelle suite de tests automatises a ete ajoutee pour securiser les fonctionnalites critiques du backend.
+## 9. Documentation des tests automatises
 
-#### Outils utilises
+Cette section documente la suite de tests backend actuellement presente dans le projet afin que chaque membre de l'equipe puisse :
 
-- `Jest` pour executer les tests
-- `Supertest` pour simuler les requetes HTTP sur l'application Express
-- des mocks `jest.spyOn(...)` pour eviter l'acces reel a MongoDB dans les scenarios testes
+- comprendre ce qui est deja couvert
+- savoir comment executer les tests localement
+- identifier les mocks utilises
+- ajouter de nouveaux cas sans casser la suite existante
 
-#### Fichiers concernes
+### 9.1 Objectif de la suite
 
-- `tests/server.test.js`
-- `tests/setupEnv.js`
-- `jest.config.cjs`
+Les tests verifies dans `tests/server.test.js` servent a securiser les parcours critiques de l'API Express, en particulier :
 
-#### Commande d'execution
+- l'etat de sante de l'application
+- l'authentification admin
+- l'inscription utilisateur
+- la persistance de session
+- la protection des routes privees
+- la validation des avis produits
+
+Le but n'est pas de tester MongoDB reellement, mais de valider le comportement HTTP et metier des routes.
+
+### 9.2 Stack de test
+
+- `Jest` : framework de test principal
+- `Supertest` : envoi de requetes HTTP a l'application Express sans lancer un serveur externe
+- `jest.spyOn(...)` : simulation des appels Mongoose et de certaines dependances pour isoler les scenarios
+
+### 9.3 Fichiers impliques
+
+- `tests/server.test.js` : suite principale des tests API
+- `tests/setupEnv.js` : variables d'environnement chargees avant les tests
+- `jest.config.cjs` : configuration Jest
+- `server.js` : application cible testee
+
+### 9.4 Configuration de test
+
+La configuration Jest utilise :
+
+- `testEnvironment: 'node'`
+- `setupFiles: ['<rootDir>/tests/setupEnv.js']`
+- `clearMocks: true`
+
+Le fichier `tests/setupEnv.js` prepare un environnement de test isole avec :
+
+- `NODE_ENV=test`
+- `SESSION_SECRET=test-session-secret`
+- `MONGODB_URI=mongodb://127.0.0.1:27017/sport-clothes-test`
+- `STRIPE_SECRET_KEY=sk_test_dummy_key`
+
+### 9.5 Commande d'execution
+
+Pour lancer la suite localement :
 
 ```bash
 npm test
 ```
 
-Cette commande lance :
+Le script execute :
 
 ```bash
 jest --runInBand
 ```
 
-#### Tests ajoutes
+L'option `--runInBand` force l'execution des tests en serie. Dans ce projet, cela evite les effets de bord sur les sessions HTTP et rend la suite plus stable.
 
-Les tests ajoutes couvrent notamment :
+### 9.6 Principe de fonctionnement
 
-- la verification du endpoint `GET /health`
-- l'authentification admin
-- la verification et la suppression de session admin
-- la protection des routes admin
-- la creation d'une session utilisateur apres inscription
-- la connexion utilisateur avec succes et en cas d'echec
-- la deconnexion utilisateur
-- l'acces au profil utilisateur avec et sans authentification
-- la recuperation du catalogue produits
-- la gestion d'un produit introuvable
-- la creation d'une commande en mode invite
-- la recuperation des commandes d'un utilisateur connecte
-- le refus d'acces aux commandes sans connexion
-- le suivi d'une commande par numero de tracking
-- la protection des routes d'avis
-- la validation de la note d'un avis
-- le refus des doublons d'avis
-- l'increment du compteur `helpful`
+Les tests appellent directement l'application exportee par `server.js` :
 
-#### Resultat attendu
+- `request(app)` pour les routes publiques ou les appels simples
+- `request.agent(app)` pour conserver les cookies de session entre plusieurs requetes
+
+Les acces base de donnees sont majoritairement remplaces par des mocks, par exemple :
+
+- `jest.spyOn(User, 'findOne')`
+- `jest.spyOn(Product, 'find')`
+- `jest.spyOn(User.prototype, 'save')`
+
+Cette approche permet de tester rapidement :
+
+- les codes HTTP
+- les messages d'erreur
+- les objets JSON retournes
+- le comportement des sessions
+
+### 9.7 Couverture actuelle
+
+Au moment de cette documentation, la suite contient **7 tests** dans `tests/server.test.js`.
+
+#### A. Sante de l'application
+
+- `GET /health`
+  Verifie que le service repond avec `200` et expose :
+  - `status`
+  - `timestamp`
+  - `uptime`
+
+#### B. Administration
+
+- `GET /api/admin/products`
+  Verifie qu'un utilisateur non authentifie recoit `401`.
+
+- `POST /api/admin/login`
+  Verifie qu'un admin peut ouvrir une session et acceder ensuite a une route protegee.
+
+#### C. Utilisateurs
+
+- `POST /api/users/register`
+  Verifie le rejet d'un email invalide avec `400`.
+
+- `POST /api/users/register` puis `GET /api/users/check`
+  Verifie qu'une inscription cree bien une session utilisateur exploitable.
+
+#### D. Avis clients
+
+- `POST /api/reviews`
+  Verifie qu'un utilisateur non connecte recoit `401`.
+
+- `POST /api/reviews`
+  Verifie qu'une note en dehors de l'intervalle autorise est refusee avec `400`.
+
+### 9.8 Resultat attendu
+
+Si tout se passe correctement, la sortie Jest doit ressembler a :
 
 ```text
 Test Suites: 1 passed, 1 total
-Tests: 25 passed, 25 total
+Tests: 7 passed, 7 total
 ```
 
-#### Interet de ces tests
+### 9.9 Interet pour l'equipe
 
-Ces tests permettent de :
+Cette suite apporte une premiere base de securisation du backend :
 
-- verifier les parcours critiques du backend
-- securiser les mecanismes d'authentification et d'autorisation
-- valider le comportement des sessions
-- rendre le pipeline Jenkins plus fiable
+- elle valide les routes les plus sensibles
+- elle detecte rapidement une regression sur l'authentification
+- elle fiabilise la pipeline Jenkins
+- elle fournit un modele simple pour ecrire de nouveaux tests
 
-Une adaptation a aussi ete faite dans `server.js` pour ignorer le rate limiter quand `NODE_ENV=test`, afin d'eviter les faux echecs pendant l'execution des tests.
+### 9.10 Bonnes pratiques pour ajouter de nouveaux tests
+
+Pour garder une suite lisible et maintenable, il est recommande de :
+
+- regrouper les tests par domaine fonctionnel
+- utiliser `request.agent(app)` quand une session doit etre conservee
+- mocker les appels Mongoose au lieu d'utiliser la vraie base
+- verifier a la fois le code HTTP et le contenu du JSON retourne
+- appeler `jest.restoreAllMocks()` apres chaque test, comme c'est deja fait dans la suite
 
 ---
 
-## 9. Pipeline CI (Jenkins)
+## 10. Pipeline CI (Jenkins)
 
 Le pipeline inclut :
 
@@ -218,7 +301,7 @@ Le pipeline inclut :
 
 ---
 
-## 10. Securite
+## 11. Securite
 
 ### Implemente
 
@@ -241,7 +324,7 @@ Le pipeline inclut :
 
 ---
 
-## 11. Ameliorations recommandees
+## 12. Ameliorations recommandees
 
 ### Priorite haute
 
@@ -257,13 +340,13 @@ Le pipeline inclut :
 
 ---
 
-## 12. Documentation existante
+## 13. Documentation existante
 
 - CI : `docs/ci.md`
 
 ---
 
-## 13. Roadmap
+## 14. Roadmap
 
 - Stabilisation CI/CD
 - Ajout des tests automatises
