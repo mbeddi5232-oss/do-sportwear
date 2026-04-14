@@ -131,7 +131,74 @@ npm run dev
 npm test
 ```
 
-⚠️ Actuellement, les tests automatisés ne sont pas encore implémentés.
+### ✅ Partie ajoutée : tests unitaires et tests d’intégration API
+
+Une nouvelle suite de tests automatisés a été ajoutée pour sécuriser les fonctionnalités critiques du backend.
+
+#### Outils utilisés
+
+- `Jest` pour exécuter les tests
+- `Supertest` pour simuler les requêtes HTTP sur l’application Express
+- des mocks `jest.spyOn(...)` pour éviter l’accès réel à MongoDB dans les scénarios testés
+
+#### Fichiers concernés
+
+- `tests/server.test.js`
+- `tests/setupEnv.js`
+- `jest.config.cjs`
+
+#### Commande d’exécution
+
+```bash
+npm test
+```
+
+Cette commande lance :
+
+```bash
+jest --runInBand
+```
+
+#### Tests ajoutés
+
+Les tests ajoutés couvrent notamment :
+
+- la vérification du endpoint `GET /health`
+- l’authentification admin
+- la vérification et la suppression de session admin
+- la protection des routes admin
+- la création d’une session utilisateur après inscription
+- la connexion utilisateur avec succès et en cas d’échec
+- la déconnexion utilisateur
+- l’accès au profil utilisateur avec et sans authentification
+- la récupération du catalogue produits
+- la gestion d’un produit introuvable
+- la création d’une commande en mode invité
+- la récupération des commandes d’un utilisateur connecté
+- le refus d’accès aux commandes sans connexion
+- le suivi d’une commande par numéro de tracking
+- la protection des routes d’avis
+- la validation de la note d’un avis
+- le refus des doublons d’avis
+- l’incrément du compteur `helpful`
+
+#### Résultat attendu
+
+```text
+Test Suites: 1 passed, 1 total
+Tests: 25 passed, 25 total
+```
+
+#### Intérêt de ces tests
+
+Ces tests permettent de :
+
+- vérifier les parcours critiques du backend
+- sécuriser les mécanismes d’authentification et d’autorisation
+- valider le comportement des sessions
+- rendre le pipeline Jenkins plus fiable
+
+⚠️ Une adaptation a aussi été faite dans `server.js` pour ignorer le rate limiter quand `NODE_ENV=test`, afin d’éviter les faux échecs pendant l’exécution des tests.
 
 ---
 
@@ -145,7 +212,7 @@ Le pipeline inclut :
 4. Linting (`eslint`)
 5. Audit sécurité (`npm audit`)
 6. Build (optionnel)
-7. Tests (optionnels)
+7. Tests (`npm test`)
 
 ---
 
