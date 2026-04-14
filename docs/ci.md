@@ -1,11 +1,11 @@
 # sport-clothes
 
-Plateforme e-commerce de vêtements de sport développée avec **Node.js**, **Express** et **MongoDB**.  
-L’application combine un backend API et un frontend statique servi depuis le dossier `public/`.
+Plateforme e-commerce de vetements de sport developpee avec **Node.js**, **Express** et **MongoDB**.
+L'application combine un backend API et un frontend statique servi depuis le dossier `public/`.
 
 ---
 
-## 🚀 1. Objectif du projet
+## 1. Objectif du projet
 
 `sport-clothes` est une application web de vente en ligne permettant :
 
@@ -13,11 +13,11 @@ L’application combine un backend API et un frontend statique servi depuis le d
 - la gestion des utilisateurs
 - le traitement des commandes
 - la collecte des avis clients
-- une interface d’administration
+- une interface d'administration
 
 ---
 
-## 🧰 2. Stack technique
+## 2. Stack technique
 
 ### Backend
 - Node.js
@@ -42,44 +42,44 @@ L’application combine un backend API et un frontend statique servi depuis le d
 
 ---
 
-## 📁 3. Structure du projet
+## 3. Structure du projet
 
-
+```text
 sport-clothes/
-├── docs/
-│ └── ci.md
-├── public/
-├── Jenkinsfile
-├── eslint.config.mjs
-├── generate-secret.js
-├── package.json
-├── package-lock.json
-└── server.js
-
+|-- docs/
+|   `-- ci.md
+|-- public/
+|-- Jenkinsfile
+|-- eslint.config.mjs
+|-- generate-secret.js
+|-- package.json
+|-- package-lock.json
+`-- server.js
+```
 
 ### Description
 
-- `server.js` : point d’entrée principal
+- `server.js` : point d'entree principal
 - `public/` : frontend statique
 - `Jenkinsfile` : pipeline CI
 - `docs/ci.md` : documentation CI existante
-- `generate-secret.js` : génération de secret sécurisé
+- `generate-secret.js` : generation de secret securise
 
 ---
 
-## ⚙️ 4. Prérequis
+## 4. Prerequis
 
 Avant de lancer le projet :
 
-- Node.js (LTS recommandé)
+- Node.js (LTS recommande)
 - npm
 - MongoDB (local ou distant)
 
 ---
 
-## 🔐 Variables d’environnement
+## 5. Variables d'environnement
 
-Créer un fichier `.env` à la racine du projet :
+Creer un fichier `.env` a la racine du projet :
 
 ```env
 PORT=3000
@@ -89,41 +89,43 @@ FRONTEND_URL=http://localhost:3000
 NODE_ENV=development
 ```
 
-## 📦 6. Installation
+## 6. Installation
 
-
+```bash
 npm ci
-
+```
 
 ou
 
-
+```bash
 npm install
-
+```
 
 ---
 
-## ▶️ 7. Lancement du projet
+## 7. Lancement du projet
 
 ### Mode normal
 
+```bash
 npm start
+```
 
+### Mode developpement
 
-### Mode développement
-
+```bash
 npm run dev
+```
 
+Acces :
 
-Accès :
-
-
+```text
 http://localhost:3000
-
+```
 
 ---
 
-## 🧪 Scripts disponibles
+## 8. Scripts disponibles
 
 ```bash
 npm start
@@ -131,23 +133,23 @@ npm run dev
 npm test
 ```
 
-### ✅ Partie ajoutée : tests unitaires et tests d’intégration API
+### Partie ajoutee : tests unitaires et tests d'integration API
 
-Une nouvelle suite de tests automatisés a été ajoutée pour sécuriser les fonctionnalités critiques du backend.
+Une nouvelle suite de tests automatises a ete ajoutee pour securiser les fonctionnalites critiques du backend.
 
-#### Outils utilisés
+#### Outils utilises
 
-- `Jest` pour exécuter les tests
-- `Supertest` pour simuler les requêtes HTTP sur l’application Express
-- des mocks `jest.spyOn(...)` pour éviter l’accès réel à MongoDB dans les scénarios testés
+- `Jest` pour executer les tests
+- `Supertest` pour simuler les requetes HTTP sur l'application Express
+- des mocks `jest.spyOn(...)` pour eviter l'acces reel a MongoDB dans les scenarios testes
 
-#### Fichiers concernés
+#### Fichiers concernes
 
 - `tests/server.test.js`
 - `tests/setupEnv.js`
 - `jest.config.cjs`
 
-#### Commande d’exécution
+#### Commande d'execution
 
 ```bash
 npm test
@@ -159,109 +161,112 @@ Cette commande lance :
 jest --runInBand
 ```
 
-#### Tests ajoutés
+#### Tests ajoutes
 
-Les tests ajoutés couvrent notamment :
+Les tests ajoutes couvrent notamment :
 
-- la vérification du endpoint `GET /health`
-- l’authentification admin
-- la vérification et la suppression de session admin
+- la verification du endpoint `GET /health`
+- l'authentification admin
+- la verification et la suppression de session admin
 - la protection des routes admin
-- la création d’une session utilisateur après inscription
-- la connexion utilisateur avec succès et en cas d’échec
-- la déconnexion utilisateur
-- l’accès au profil utilisateur avec et sans authentification
-- la récupération du catalogue produits
-- la gestion d’un produit introuvable
-- la création d’une commande en mode invité
-- la récupération des commandes d’un utilisateur connecté
-- le refus d’accès aux commandes sans connexion
-- le suivi d’une commande par numéro de tracking
-- la protection des routes d’avis
-- la validation de la note d’un avis
-- le refus des doublons d’avis
-- l’incrément du compteur `helpful`
+- la creation d'une session utilisateur apres inscription
+- la connexion utilisateur avec succes et en cas d'echec
+- la deconnexion utilisateur
+- l'acces au profil utilisateur avec et sans authentification
+- la recuperation du catalogue produits
+- la gestion d'un produit introuvable
+- la creation d'une commande en mode invite
+- la recuperation des commandes d'un utilisateur connecte
+- le refus d'acces aux commandes sans connexion
+- le suivi d'une commande par numero de tracking
+- la protection des routes d'avis
+- la validation de la note d'un avis
+- le refus des doublons d'avis
+- l'increment du compteur `helpful`
 
-#### Résultat attendu
+#### Resultat attendu
 
 ```text
 Test Suites: 1 passed, 1 total
 Tests: 25 passed, 25 total
 ```
 
-#### Intérêt de ces tests
+#### Interet de ces tests
 
 Ces tests permettent de :
 
-- vérifier les parcours critiques du backend
-- sécuriser les mécanismes d’authentification et d’autorisation
+- verifier les parcours critiques du backend
+- securiser les mecanismes d'authentification et d'autorisation
 - valider le comportement des sessions
 - rendre le pipeline Jenkins plus fiable
 
-⚠️ Une adaptation a aussi été faite dans `server.js` pour ignorer le rate limiter quand `NODE_ENV=test`, afin d’éviter les faux échecs pendant l’exécution des tests.
+Une adaptation a aussi ete faite dans `server.js` pour ignorer le rate limiter quand `NODE_ENV=test`, afin d'eviter les faux echecs pendant l'execution des tests.
 
 ---
 
-## 🔄 9. Pipeline CI (Jenkins)
+## 9. Pipeline CI (Jenkins)
 
 Le pipeline inclut :
 
 1. Checkout du code
-2. Vérification Node/npm
+2. Verification Node/npm
 3. Installation (`npm ci`)
 4. Linting (`eslint`)
-5. Audit sécurité (`npm audit`)
+5. Audit securite (`npm audit`)
 6. Build (optionnel)
 7. Tests (`npm test`)
 
 ---
 
-## 🔒 10. Sécurité
-### Implémenté
+## 10. Securite
+
+### Implemente
 
 - Protection contre brute-force (login)
 - Cookies `httpOnly`
-- Cookie sécurisé en production
+- Cookie securise en production
 - Rate limiting
 
-### ⚠️ Points à améliorer
+### Points a ameliorer
 
-- Secret de session par défaut présent
-- Comptes admin codés en dur
-- Absence de gestion avancée des secrets
+- Secret de session par defaut present
+- Comptes admin codes en dur
+- Absence de gestion avancee des secrets
 
 ### Recommandations
 
-- Utiliser des variables d’environnement sécurisées
-- Supprimer les credentials hardcodés
-- Ajouter une gestion sécurisée des utilisateurs admin
+- Utiliser des variables d'environnement securisees
+- Supprimer les credentials hardcodes
+- Ajouter une gestion securisee des utilisateurs admin
 
 ---
 
-## 📈 11. Améliorations recommandées
+## 11. Ameliorations recommandees
 
-### Priorité haute
+### Priorite haute
+
 - Ajouter tests (Jest / Supertest)
 - Externaliser toute configuration sensible
 - Documenter les endpoints API
 
-### Priorité moyenne
+### Priorite moyenne
+
 - Docker / Docker Compose
-- Seed de base de données
+- Seed de base de donnees
 - Logs et monitoring
 
 ---
 
-## 📚 12. Documentation existante
+## 12. Documentation existante
 
 - CI : `docs/ci.md`
 
 ---
 
-## 🛣️ 13. Roadmap
+## 13. Roadmap
 
 - Stabilisation CI/CD
-- Ajout des tests automatisés
-- Renforcement sécurité
-- Déploiement automatisé
-- Documentation complète
+- Ajout des tests automatises
+- Renforcement securite
+- Deploiement automatise
+- Documentation complete
