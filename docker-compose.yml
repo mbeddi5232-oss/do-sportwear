@@ -1,0 +1,13 @@
+services:
+  backend:
+    build: . # Path to your Dockerfile
+    container_name: sport-backend-prod
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      # Add your MongoDB URL here if it's an environment variable
+      - MONGO_URI=your_mongodb_connection_string 
+    restart: always
+
+  # Future: We can add 'frontend' or 'db' services here
