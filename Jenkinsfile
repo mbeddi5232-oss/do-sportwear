@@ -90,8 +90,12 @@ pipeline {
     stage('Docker Build') {
       steps {
         script {
-          echo "Building the image locally..."
-          sh "docker build -t sportwear-backend:latest ."
+          if (isUnix()) {
+            echo "Building the image locally..."
+            sh "docker build -t sportwear-backend:latest ."
+          } else {
+            echo "Building the image locally..."
+            bat "docker build -t sportwear-backend:latest ."
         }
       }
     }
