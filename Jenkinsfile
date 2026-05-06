@@ -96,9 +96,22 @@ pipeline {
           } else {
             echo "Building the image locally..."
             bat "docker build -t sportwear-backend:latest ."
+          }
+        }
+      }
+    }
+    stage('Deploy') {
+    steps {
+        script {
+            if (isUnix()) {
+            echo "Stopping old containers and starting the new build..."
+            sh "docker-compose up -d --build"
+            }else {
+            echo "Stopping old containers and starting the new build..."
+            bat "docker-compose up -d --build"
+            }
         }
       }
     }
   }
-}
 }
