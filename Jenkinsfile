@@ -87,11 +87,11 @@ pipeline {
         }
       }
     }
-    stage('Docker Build & Tag') {
+    stage('Docker Build') {
       steps {
         script {
-          echo "Building the Docker image for build: ${env.BUILD_NUMBER}"
-          sh "docker build -t your-username/sportwear-backend:${env.BUILD_NUMBER} ."
+          echo "Building the image locally..."
+          sh "docker build -t sportwear-backend:latest ."
         }
       }
     }
