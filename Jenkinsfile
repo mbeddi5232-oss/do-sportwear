@@ -104,11 +104,15 @@ pipeline {
     steps {
         script {
             if (isUnix()) {
-            echo "Stopping old containers and starting the new build..."
+            echo "Cleaning up old containers and deploying the new build..."
+            sh "docker-compose down"
             sh "docker-compose up -d --build"
+            echo "Deployment successful: http://localhost:3000"
             }else {
-            echo "Stopping old containers and starting the new build..."
+            echo "Cleaning up old containers and deploying the new build..."
+            bat "docker-compose down"
             bat "docker-compose up -d --build"
+            echo "Deployment successful: http://localhost:3000"
             }
         }
       }
