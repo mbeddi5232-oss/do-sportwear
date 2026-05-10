@@ -64,17 +64,6 @@ pipeline {
         }
       }
     }
-    stage('Build (optional)') {
-      steps {
-        script {
-          if (isUnix()) {
-            sh 'npm run build --if-present'
-          } else {
-            bat 'npm run build --if-present'
-          }
-        }
-      }
-    }
 
     stage('Unit Tests') {
       steps {
