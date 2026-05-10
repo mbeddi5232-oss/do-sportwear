@@ -65,6 +65,18 @@ pipeline {
       }
     }
 
+    stage('Unit Tests') {
+    steps {
+        script {
+            if (isUnix()) {
+                sh 'npm test'
+            } else {
+                bat 'npm test'
+            }
+          }
+        }
+      }
+
     stage('Docker Build') {
       steps {
         script {
@@ -78,20 +90,6 @@ pipeline {
         }
       }
     }
-
-    stage('Unit Tests (In-Container)') {
-    steps {
-        script {
-            echo "Running tests inside a temporary container..."
-            // We run a one-off container using your image
-            if (isUnix()) {
-                sh "docker run --rm sportwear-backend:latest npm test"
-            } else {
-                bat "docker run --rm sportwear-backend:latest npm test"
-            }
-          }
-        }
-      }
 
     stage('Deploy') {
     steps {
